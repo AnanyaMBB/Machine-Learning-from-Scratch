@@ -3,12 +3,14 @@ import matplotlib.pyplot as plt
 
 
 class NeuralNetwork:
-    def __init__(self, layers, units, data):
+    def __init__(self, layers, units, data, activations=[]):
         self.w = []
         self.b = []
         self.layers = layers
         self.units = units
         self.data = data
+        self.activations = activations
+        self.Dense()
 
     # Activation functions
     def sigmoid(z):
@@ -18,17 +20,24 @@ class NeuralNetwork:
     def Dense(self):
         for i in range(self.layers - 1):
             self.w.append(np.zeros((self.units[i], self.units[i+1])))
-            self.b.append(np.zeros())
-        self.w = np.array(self.w)
+            self.b.append(np.zeros((self.units[i+1])))
         self.b = np.zeros((self.layers, ))
 
     # Forward propagation
-    def start_forward_prop(self):
-        for i in range(self.layers):
-            self.forward_prop(self, self.data, self.w, self.b)
+    def forward_prop(self):
+        a = self.data
 
-    def forward_prop(self, a, w, b):
-        np.matmul(self.data.T, self.w) + self.b
+        for i in range(self.layers - 1):
+            print(a)
+            print(self.w[i])
+            z = np.matmul(a, self.w[i])
+            a = z
+        return a
+
+    # Error
+
+    # def forward_prop_rec(self, a, w, b):
+    #     np.matmul(self.data.T, self.w) + self.b
 
     # Backward propagation
 
@@ -36,5 +45,6 @@ class NeuralNetwork:
     #     print(self.w)
 
 
-a = NeuralNetwork(3, [2, 3, 1])
-print(a.w)
+data = [[1, 2], [3, 4], [5, 6]]
+
+a = NeuralNetwork(3, [2, 2, 1], np.array(data)).forward_prop()
